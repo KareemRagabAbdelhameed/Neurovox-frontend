@@ -19,6 +19,10 @@ import { setTheme } from "./store/themeSlice"
 import ProfilePage from "./pages/ProfilePage"
 import ProtectedRoute from "./validation/ProtectedRoute"
 import Missions from "./pages/Missions"
+import VideoMission from "./pages/VideoMission"
+import ArticleMission from "./pages/ArticleMission"
+import CheckinMission from "./pages/CheckinMission"
+import SurveyMission from "./pages/SurveyMission"
 
 const App = () => {
 
@@ -56,6 +60,10 @@ const App = () => {
           <Route index element={<InvestmentPlans />} />
           <Route path="plans" element={<InvestmentPlans />} />
           <Route path="missions" element={<Missions />} />
+          <Route path="missions/video" element={<VideoMission />} />
+          <Route path="missions/article" element={<ArticleMission />} />
+          <Route path="missions/checkin" element={<CheckinMission />} />
+          <Route path="missions/survey" element={<SurveyMission />} />
           <Route path="deposits" element={<DepositsPage />} />
           <Route path="withdrawals" element={<WithdrawalsPage />} />
           <Route path="teams" element={<InvestmentPlans />} />

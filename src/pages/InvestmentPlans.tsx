@@ -50,7 +50,7 @@ const InvestmentPlans = () => {
   const actions = [
     {
       title: "Deposit",
-      link:"/deposits",
+      link:"/dashboard/deposits",
       icon: <Download className="w-6 h-6 text-emerald-500 dark:text-emerald-300" />,
       classes: {
         wrapper: "bg-emerald-500/10 hover:bg-emerald-500/20 dark:bg-emerald-300/20 dark:hover:bg-emerald-300/30",
@@ -59,7 +59,7 @@ const InvestmentPlans = () => {
     },
     {
       title: "Withdraw",
-      link: "/withdrawals",
+      link: "/dashboard/withdrawals",
       icon: <Upload className="w-6 h-6 text-blue-500 dark:text-blue-300" />,
       classes: {
         wrapper: "bg-blue-500/10 hover:bg-blue-500/20 dark:bg-blue-300/20 dark:hover:bg-blue-300/30",
@@ -68,7 +68,7 @@ const InvestmentPlans = () => {
     },
     {
       title: "New Plan",
-      link:"/plans",
+      link:"/dashboard/plans",
       icon: <PlusCircle className="w-6 h-6 text-purple-500 dark:text-purple-300" />,
       classes: {
         wrapper: "bg-purple-500/10 hover:bg-purple-500/20 dark:bg-purple-300/20 dark:hover:bg-purple-300/30",
@@ -77,7 +77,7 @@ const InvestmentPlans = () => {
     },
     {
       title: "Missions",
-      link: "/missions",
+      link: "/dashboard/missions",
       icon: <Flag className="w-6 h-6 text-amber-500 dark:text-amber-300" />,
       classes: {
         wrapper: "bg-amber-500/10 hover:bg-amber-500/20 dark:bg-amber-300/20 dark:hover:bg-amber-300/30",
@@ -87,11 +87,11 @@ const InvestmentPlans = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 space-y-8">
+    <div className="container mx-auto pl-4 sm:pl-8 py-8 space-y-8">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-500 to-blue-500 dark:from-emerald-300 dark:to-blue-300 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-500 to-blue-500 dark:from-emerald-300 dark:to-blue-300 bg-clip-text text-transparent">
             Welcome Back, Kareem
           </h1>
           <p className="text-gray-600 dark:text-gray-300">Here is your portfolio overview</p>
@@ -103,21 +103,21 @@ const InvestmentPlans = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, index) => (
           <Card
             key={index}
-            className="p-6 bg-gradient-to-br from-background/50 to-background border-border dark:border-gray-700 hover:border-border/80 dark:hover:border-gray-600 transition-all duration-300 hover:shadow-lg backdrop-blur-sm"
+            className="p-4 sm:p-6 bg-gradient-to-br from-background/50 to-background border-border dark:border-gray-700 hover:border-border/80 dark:hover:border-gray-600 transition-all duration-300 hover:shadow-lg backdrop-blur-sm text-center sm:text-left"
           >
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
+            <div className="space-y-3 sm:space-y-4">
+              <div className="flex items-center justify-center sm:justify-between space-x-3">
                 <span className="text-sm text-gray-600 dark:text-gray-300">{stat.title}</span>
                 {stat.icon}
               </div>
-              <div className="space-y-2">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</h3>
+              <div className="space-y-1 sm:space-y-2">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</h3>
                 <p
-                  className={`text-sm flex items-center gap-1 ${
+                  className={`text-sm flex items-center justify-center sm:justify-start gap-1 ${
                     stat.trend === "up"
                       ? "text-emerald-500 dark:text-emerald-400"
                       : "text-gray-600 dark:text-gray-400"
@@ -133,46 +133,41 @@ const InvestmentPlans = () => {
       </div>
 
       {/* Quick Actions */}
-      <Card className="p-6 bg-gradient-to-br from-background/50 to-background border-border dark:border-gray-700">
+      <Card className="p-4 sm:p-6 bg-gradient-to-br from-background/50 to-background border-border dark:border-gray-700">
         <div className="space-y-4">
-          <div className="space-y-1">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Quick Actions</h2>
+          <div className="space-y-1 text-center sm:text-left">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Quick Actions</h2>
             <p className="text-gray-600 dark:text-gray-300">
               Manage your investments and activities
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             {actions.map((action, index) => (
-              
-              <button
+              <Link 
                 key={index}
-                className={`p-4 rounded-lg transition-all duration-300 group ${action.classes.wrapper}`}
+                to={action.link}
+                className={`p-3 sm:p-4 rounded-lg transition-all duration-300 group ${action.classes.wrapper} flex flex-col items-center justify-center`}
               >
-                <Link to={action.link}>
-                <div className="space-y-3 items-center">
-                  <div
-                    className={`w-12 h-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${action.classes.iconBox}`}
-                  >
-                    {action.icon}
-                  </div>
-                  <span className="block font-medium text-gray-900 dark:text-white">{action.title}</span>
+                <div
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${action.classes.iconBox} mb-2 sm:mb-3`}
+                >
+                  {action.icon}
                 </div>
-                </Link>
-
-              </button>
+                <span className="block font-medium text-sm sm:text-base text-gray-900 dark:text-white text-center">{action.title}</span>
+              </Link>
             ))}
           </div>
         </div>
       </Card>
 
       {/* Active Investments & Missions */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
         {/* Active Investments */}
-        <Card className="p-6 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 dark:from-blue-300/20 dark:via-purple-300/20 dark:to-pink-300/20 backdrop-blur-sm border-border dark:border-gray-700">
+        <Card className="p-4 sm:p-6 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 dark:from-blue-300/20 dark:via-purple-300/20 dark:to-pink-300/20 backdrop-blur-sm border-border dark:border-gray-700">
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
               <div className="space-y-1">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Active Investments</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Active Investments</h2>
                 <p className="text-gray-600 dark:text-gray-300">
                   Your ongoing investment plans
                 </p>
@@ -182,15 +177,18 @@ const InvestmentPlans = () => {
               </Badge>
             </div>
             {/* Add your active investments list here */}
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <p>No active investments yet</p>
+            </div>
           </div>
         </Card>
 
         {/* Active Missions */}
-        <Card className="p-6 bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-red-500/10 dark:from-amber-300/20 dark:via-orange-300/20 dark:to-red-300/20 backdrop-blur-sm border-border dark:border-gray-700">
+        <Card className="p-4 sm:p-6 bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-red-500/10 dark:from-amber-300/20 dark:via-orange-300/20 dark:to-red-300/20 backdrop-blur-sm border-border dark:border-gray-700">
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
               <div className="space-y-1">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Active Missions</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Active Missions</h2>
                 <p className="text-gray-600 dark:text-gray-300">
                   Complete tasks to earn rewards
                 </p>
@@ -200,6 +198,9 @@ const InvestmentPlans = () => {
               </Badge>
             </div>
             {/* Add your active missions list here */}
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <p>No active missions yet</p>
+            </div>
           </div>
         </Card>
       </div>

@@ -13,7 +13,8 @@ import {
   BarChart,
   DollarSign,
   Layers,
-  Target as TargetIcon
+  Target as TargetIcon,
+  User
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -75,6 +76,12 @@ export default function Sidebar({}: SidebarProps) {
       href: "/dashboard/settings",
       icon: SettingsIcon,
       current: location === "/dashboard/settings",
+    },
+    {
+      name: t("Profile"),
+      href: "/dashboard/profile",
+      icon: User,
+      current: location === "/dashboard/profile",
     },
   ];
 
@@ -200,41 +207,6 @@ export default function Sidebar({}: SidebarProps) {
           </div>
         </div>
       </aside>
-
-      {/* Mobile Bottom Navigation */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-        <div className="grid grid-cols-5 gap-1 p-2">
-          {navigation.slice(0, 8).map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={cn(
-                item.current
-                  ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800",
-                "flex flex-col items-center p-2 text-xs rounded-lg transition-all duration-300"
-              )}
-            >
-              <div className="relative">
-                <item.icon
-                  className={cn(
-                    "h-5 w-5 mx-auto",
-                    item.current
-                      ? "text-blue-600 dark:text-blue-400"
-                      : "text-gray-400 dark:text-gray-500"
-                  )}
-                />
-                {item.badge && (
-                  <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 dark:bg-blue-400 text-[10px] text-white">
-                    {item.badge}
-                  </span>
-                )}
-              </div>
-              <span className="mt-1 truncate">{item.name}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
     </>
   );
 }
