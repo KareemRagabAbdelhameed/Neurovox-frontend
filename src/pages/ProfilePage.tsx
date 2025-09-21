@@ -1,41 +1,67 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { FiEdit2, FiTrash2, FiCopy, FiCheck } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../store/userSlice';
-import type { AppDispatch } from '../store/store';
+import type { AppDispatch, RootState } from '../store/store';
+import api from '../config/axiosConfig';
 
 interface ReferredUser {
   name: string;
   email: string;
-  referralCode: string;
+  createdAt: string;
+  level : number;
 }
+// interface IUserInfo {
+//     firstName : string,
+//     lastName : string,
+//     email : string,
+//     availableBalance : string,
+//     lockedBalance : string,
+//     credits : string,
+//     inviteLink : string,
+// }
 
 const ProfilePage = () => {
     const dispatch = useDispatch<AppDispatch>();
+  const { data: userInfo, loading, error } = useSelector((state: RootState) => state.user);
     const token = useSelector((state: any) => state.auth.token);
     console.log(token)
-    const userInfo = useSelector((state: any) => state.user.data);
-    console.log(userInfo);
+    // const userInfo = useSelector((state: any) => state.user.data);
+    // console.log(userInfo);
 //   const status = useSelector((state: any) => state.user.status);
-  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
+//   const [userInfo,setUserInfo] = useState<IUserInfo | null>(null);
 
  
 
   const referredUsers: ReferredUser[] = [
-    { name: 'Alice Smith', email: 'alice@example.com', referralCode: 'REF001' },
-    { name: 'Bob Johnson', email: 'bob@example.com', referralCode: 'REF002' },
+    { name: 'Alice Smith', email: 'alice@example.com', createdAt: '20-11-2024',level : 1 },
+    { name: 'Bob Johnson', email: 'bob@example.com', createdAt: '5-5-2035' , level : 2 },
   ];
+
+//   useEffect(() => {
+//     const fetchUser = async () => {
+//       try {
+//         const response = await api.get("auth/profile");
+//         console.log(response.data);
+//         setUserInfo(response.data.data);
+//       } catch (error) {
+//         console.error("Error fetching user:", error);
+//       } finally {
+//       }
+//     };
+
+//     fetchUser();
+//   }, []);
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchUser({ token }));
+      dispatch(fetchUser());
     }
   }, [dispatch, token]);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(userInfo.inviteLink);
+    await navigator.clipboard.writeText(userInfo?.inviteLink ?? "");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -49,7 +75,7 @@ const ProfilePage = () => {
             <div className="relative group">
               <img
                 src="https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg"
-                alt={userInfo.firstName}
+                alt={userInfo?.firstName}
                 className="w-24 h-24 rounded-full object-cover border-4 border-blue-500 dark:border-blue-400"
               />
               <div className="absolute inset-0 rounded-full bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -59,8 +85,8 @@ const ProfilePage = () => {
             </div>
             
             <div className="flex-1 text-center sm:text-left">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{userInfo.firstName} {userInfo.lastName}</h1>
-              <p className="text-gray-500 dark:text-gray-400">{userInfo.email}</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{userInfo?.firstName} {userInfo?.lastName}</h1>
+              <p className="text-gray-500 dark:text-gray-400">{userInfo?.email}</p>
             </div>
 
             <div className="flex gap-4">
@@ -78,17 +104,17 @@ const ProfilePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-6 text-white">
             <h3 className="text-lg font-medium opacity-90">Available Balance</h3>
-            <p className="text-3xl font-bold mt-2">${userInfo.availableBalance === null ? "0.00" :userInfo.availableBalance.toLocaleString()}</p>
+            <p className="text-3xl font-bold mt-2">${userInfo?.availableBalance === null ? "0.00" :userInfo?.availableBalance.toLocaleString()}</p>
           </div>
           
           <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
             <h3 className="text-lg font-medium opacity-90">Locked Balance</h3>
-            <p className="text-3xl font-bold mt-2">${userInfo.lockedBalance === null ? "0.00" :userInfo.lockedBalance.toLocaleString()}</p>
+            <p className="text-3xl font-bold mt-2">${userInfo?.lockedBalance === null ? "0.00" :userInfo?.lockedBalance.toLocaleString()}</p>
           </div>
           
           <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-white">
             <h3 className="text-lg font-medium opacity-90">Credits</h3>
-            <p className="text-3xl font-bold mt-2">${userInfo.credits === null ? "0.00" :userInfo.credits.toLocaleString()}</p>
+            <p className="text-3xl font-bold mt-2">${userInfo?.credits === null ? "0.00" :userInfo?.credits.toLocaleString()}</p>
           </div>
         </div>
 
@@ -98,7 +124,7 @@ const ProfilePage = () => {
           <div className="flex items-center gap-4 flex-wrap">
             <input
               type="text"
-              value={userInfo.inviteLink}
+              value={userInfo?.inviteLink}
               readOnly
               className="flex-1 min-w-[200px] px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none"
             />
@@ -123,7 +149,8 @@ const ProfilePage = () => {
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Name</th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Email</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Referral Code</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Created At</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Level</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -131,7 +158,8 @@ const ProfilePage = () => {
                   <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{user.name}</td>
                     <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{user.email}</td>
-                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{user.referralCode}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{user.createdAt}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{user.level}</td>
                   </tr>
                 ))}
               </tbody>

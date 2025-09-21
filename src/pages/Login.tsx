@@ -16,7 +16,7 @@ type LoginValues = {
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const { loading, success, error, user } = useAppSelector((state) => state.auth);
+  const { loading, success, error } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const { isDarkMode } = useTheme();

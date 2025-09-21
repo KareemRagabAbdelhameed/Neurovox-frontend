@@ -1,39 +1,52 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Button } from "../components/ui/Button";
-import { Brain, Menu, LogIn, Moon, Sun, X } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Brain, Menu, LogIn, X } from "lucide-react";
+import { Avatar, AvatarFallback } from "../components/ui/avatar";
 import { Link, useNavigate } from "react-router-dom";
 import { Bell, Settings, LogOut } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
 import Swal from "sweetalert2";
 import { logoutUser } from "../store/authSlice";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch } from "../store/store";
+import type { AppDispatch, RootState } from "../store/store";
 import api from "../config/axiosConfig";
+import { fetchUser } from "../store/userSlice";
 
 interface HeaderProps {
   onMobileMenuToggle?: () => void;
 }
 
+// interface IUserInfo {
+//   firstName : string,
+//   lastName : string,
+//   email : string,
+//   availableBalance : string,
+//   lockedBalance : string,
+//   credits : string,
+//   totalEarnings : string,
+// }
+
 export default function Header({ onMobileMenuToggle }: HeaderProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-    const token = useSelector((state: any) => state.auth.token);
-    console.log(token);
-      const userInfo = useSelector((state: any) => state.user.data);
-      console.log(userInfo)
+  const { data: userInfo, loading, error } = useSelector((state: RootState) => state.user);
+  console.log(userInfo);
+  const token = useSelector((state: RootState) => state.auth.token);
+
+    // console.log(token);
+      // const userInfo = useSelector((state: any) => state.user.data);
+      // console.log(userInfo)
   const navigate = useNavigate();
-  const { user } = useAppSelector((state) => state.auth);
-  console.log(user)
+  // const { user } = useAppSelector((state) => state.auth);
+  // console.log(user)
   
   const { isLoading } = useAuth();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-    
+  // const [userInfo,setUserInfo] = useState<IUserInfo | null>(null)
   
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
@@ -71,6 +84,26 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
       document.removeEventListener("keydown", handleEscapeKey);
     };
   }, []);
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUser());
+    }
+  }, [dispatch, token]);
+
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const response = await api.get("auth/profile");
+  //       console.log(response.data);
+  //       setUserInfo(response.data.data);
+  //     } catch (error) {
+  //       console.error("Error fetching user:", error);
+  //     } finally {
+  //     }
+  //   };
+
+  //   fetchUser();
+  // }, []);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -87,6 +120,24 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
   
     fetchNotifications();
   }, []);
+
+  // const markNotificationAsRead = async (notificationId: string) => {
+  //   try {
+  //     await api.patch(`notifications/is-read/${notificationId}`);
+      
+  //     // تحديث الحالة المحلية
+  //     const updatedNotifications = notifications.map(n => 
+  //       n.id === notificationId ? { ...n, isRead: true } : n
+  //     );
+  //     setNotifications(updatedNotifications);
+  //     setUnreadCount(prev => prev - 1);
+      
+  //     return true;
+  //   } catch (error) {
+  //     console.error("Error marking notification as read:", error);
+  //     return false;
+  //   }
+  // };
 
 
   
@@ -174,13 +225,13 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 <div className="p-2 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 hover:from-green-100 hover:to-emerald-100 dark:hover:from-green-900/30 dark:hover:to-emerald-900/30 transition-all duration-300 border border-gray-100 dark:border-gray-800">
                   <p className="text-xs text-gray-500 dark:text-white">{t("Available Balance")}</p>
                   <p className="text-base font-semibold text-green-600 dark:text-green-400" data-testid="text-header-balance">
-                    ${user?.balance || "0.00"}
+                    ${userInfo?.availableBalance || "0.00"}
                   </p>
                 </div>
                 <div className="p-2 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 hover:from-indigo-100 hover:to-purple-100 dark:hover:from-indigo-900/30 dark:hover:to-purple-900/30 transition-all duration-300 border border-gray-100 dark:border-gray-800">
                   <p className="text-xs text-gray-500 dark:text-white">{t("Total Earnings")}</p>
                   <p className="text-base font-semibold text-indigo-600 dark:text-indigo-400" data-testid="text-header-earnings">
-                    ${user?.totalEarnings || "0.00"}
+                    ${userInfo?.totalEarnings || "0.00"}
                   </p>
                 </div>
               </div>
@@ -274,7 +325,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                         className="w-full justify-center text-indigo-600 dark:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-800 py-3"
                         onClick={() => {
                           setIsNotificationsOpen(false);
-                          window.location.href = '/notifications';
+                          // window.location.href = '/notifications';
                         }}
                       >
                         {t("View All Notifications")}
@@ -293,9 +344,9 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                   aria-label="User menu"
                 >
                   <Avatar className="h-10 w-10 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 hover:ring-2 hover:ring-indigo-500 dark:hover:ring-indigo-400 transition-all duration-300">
-                    <AvatarImage src={user?.avatar} alt={user?.name} />
+                    {/* <AvatarImage src={user?.avatar} alt={user?.name} /> */}
                     <AvatarFallback className="text-white font-semibold">
-                      {user?.name?.charAt(0) || "U"}
+                      {userInfo?.firstName?.charAt(0) || "U"}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
@@ -304,18 +355,20 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-56 origin-top-right bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg z-50">
                     <div className="flex items-center justify-start gap-3 p-4">
+                      <Link to={"/profile"}>
                       <Avatar className="h-12 w-12 bg-gradient-to-r from-indigo-600 to-purple-600">
-                        <AvatarImage src={user?.avatar} alt={user?.name} />
+                        {/* <AvatarImage src={user?.avatar} alt={user?.name} /> */}
                         <AvatarFallback className="text-white">
-                          {user?.name?.charAt(0) || "U"}
+                          {userInfo?.firstName?.charAt(0) || "U"}
                         </AvatarFallback>
                       </Avatar>
+                      </Link>
                       <div className="flex flex-col space-y-1 leading-none overflow-hidden">
                         <p className="font-medium text-gray-900 dark:text-gray-100 truncate">
-                          {user?.name || "User"}
+                          {userInfo?.firstName || "User"} {userInfo?.lastName || "User"}
                         </p>
                         <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                          {user?.email || "user@example.com"}
+                          {userInfo?.email || "user@example.com"}
                         </p>
                       </div>
                     </div>
@@ -347,13 +400,13 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                       <div>
                         <p className="text-xs text-gray-500 dark:text-gray-400">{t("Available Balance")}</p>
                         <p className="text-base font-semibold text-green-600 dark:text-green-400">
-                          ${user?.balance || "0.00"}
+                          ${userInfo?.availableBalance || "0.00"}
                         </p>
                       </div>
                       <div>
                         <p className="text-xs text-gray-500 dark:text-gray-400">{t("Total Earnings")}</p>
                         <p className="text-base font-semibold text-indigo-600 dark:text-indigo-400">
-                          ${user?.totalEarnings || "0.00"}
+                          ${userInfo?.totalEarnings || "0.00"}
                         </p>
                       </div>
                     </div>

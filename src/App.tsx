@@ -17,13 +17,13 @@ import type { AppDispatch, RootState } from "./store/store"
 import { useDispatch, useSelector } from "react-redux"
 import { setTheme } from "./store/themeSlice"
 import ProfilePage from "./pages/ProfilePage"
+import ProtectedRoute from "./validation/ProtectedRoute"
 
 const App = () => {
 
   const dispatch: AppDispatch = useDispatch();
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
 
-  // استرجاع theme من localStorage عند تحميل الصفحة
   useEffect(() => {
     const savedTheme = localStorage.getItem("darkMode");
     if (savedTheme !== null) {
@@ -31,7 +31,6 @@ const App = () => {
     }
   }, [dispatch]);
 
-  // تحديث كلاس الـhtml
   useEffect(() => {
     if (darkMode) document.documentElement.classList.add("dark");
     else document.documentElement.classList.remove("dark");
@@ -46,14 +45,20 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route path="/" element={<MainLayout />}>
+          <Route index element={<InvestmentPlans />} />
           <Route path="plans" element = {<InvestmentPlans />} />
-          <Route path="missions" element = {<p>Missions</p>} />
+          <Route path="dashboard" element = {<InvestmentPlans />} />
+          <Route path="missions" element = {<InvestmentPlans />} />
           <Route path="deposits" element = {<DepositsPage />} />
           <Route path="withdrawals" element = {<WithdrawalsPage />} />
-          <Route path="teams" element = {<p>Teams</p>} />
-          <Route path="analytics" element = {<p>Analytics</p>} />
+          <Route path="teams" element = {<p><InvestmentPlans /></p>} />
+          <Route path="analytics" element = {<p><InvestmentPlans /></p>} />
           <Route path="settings" element = {<Settings />} />
-          <Route path="profile" element = {<ProfilePage />} />
+          <Route path="profile" element = {
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          } />
           </Route>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

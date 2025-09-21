@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
 import type { AppDispatch, RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../store/themeSlice";
@@ -16,22 +15,22 @@ const Settings = () => {
   
 
   return (
-    <div className="min-h-screen flex justify-center bg-gray-50 dark:bg-gray-900 py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
-      <div className="max-w-3xl g mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-8 transition-colors duration-300">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+      <div className="w-full max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 sm:p-8 lg:p-10 transition-colors duration-300">
+        <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-10 text-center">
           {t("settings")}
         </h1>
         
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2 w-full">
           {/* Language Selection */}
-          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
-            <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
+          <div className="w-full bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 sm:p-8">
+            <label className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">
               {t("language")}
             </label>
             <select
               value={i18n.language}
               onChange={(e) => changeLanguage(e.target.value)}
-              className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+              className="w-full p-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
             >
               <option value="en">🇬🇧 English</option>
               <option value="ar">🇪🇬 العربية</option>
@@ -44,8 +43,8 @@ const Settings = () => {
           </div>
           
           {/* Theme Toggle */}
-          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
-            <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-3">
+          <div className="w-full bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 sm:p-8">
+            <label className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">
               {t("theme")}
             </label>
             <div className="flex items-center justify-between">

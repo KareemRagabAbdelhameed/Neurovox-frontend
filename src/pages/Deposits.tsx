@@ -44,8 +44,6 @@ export default function DepositsPage() {
   
   // Mock data for deposits and balance
   const [deposits, setDeposits] = useState<Deposit[]>([]);
-  const [userData,setUserData] = useState<User | null>(null);
-  const [balance, setBalance] = useState({ available: "1,250.00", locked: "250.00", credits: 500 });
 
   useEffect(() => {
     
@@ -56,7 +54,6 @@ export default function DepositsPage() {
     api.get("deposits")
     .then((res) => {
       setDeposits(res.data.data);
-      setUserData(res.data.data.user);
       console.log(res.data);
     })
     .catch((err) => {

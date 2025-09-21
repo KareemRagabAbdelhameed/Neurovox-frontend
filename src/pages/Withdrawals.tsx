@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function WithdrawalsPage() {
   const [amount, setAmount] = useState("");
@@ -46,20 +46,7 @@ export default function WithdrawalsPage() {
     setDestination("");
   };
 
-  const getStatusBadge = (status:any) => {
-    const base =
-      "px-2 py-1 rounded text-xs font-medium flex items-center gap-1 w-fit";
-    switch (status) {
-      case "completed":
-        return <span className={`${base} bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-100`}>✔ Completed</span>;
-      case "pending":
-        return <span className={`${base} bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100`}>⏳ Pending</span>;
-      case "failed":
-        return <span className={`${base} bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-100`}>✖ Failed</span>;
-      default:
-        return <span className={`${base} bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100`}>{status}</span>;
-    }
-  };
+  
 
   const calculateFee = (amt: string) => ((parseFloat(amt) || 0) * 0.05).toFixed(2);
   const calculateNet = (amt: string) => ((parseFloat(amt) || 0) * 0.95).toFixed(2);
@@ -79,7 +66,7 @@ export default function WithdrawalsPage() {
       </div>
 
       {/* Balance */}
-      <div className="bg-gradient-to-r from-indigo-500 to-purple-600  dark:bg-gray-900 shadow rounded-xl p-6">
+      {/* <div className="bg-gradient-to-r from-indigo-500 to-purple-600  dark:bg-gray-900 shadow rounded-xl p-6">
         <div className="flex justify-between items-center">
           <div>
             <p className="text-3xl font-bold text-white dark:text-indigo-400">
@@ -98,7 +85,7 @@ export default function WithdrawalsPage() {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -212,7 +199,7 @@ export default function WithdrawalsPage() {
             </p>
           ) : (
             <div className="space-y-3">
-              {withdrawals.map((w) => (
+              {withdrawals.map(() => (
                 <div
                 //   key={w.id}
                   className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800"

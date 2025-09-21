@@ -1,15 +1,9 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/card";
 import {
-  CalendarDays,
   TrendingUp,
-  Zap,
-  Shield,
-  DollarSign,
-  Clock,
-  ChevronRight,
   Wallet,
   ArrowUpRight,
   Target,
@@ -19,7 +13,6 @@ import {
   PlusCircle,
   Flag,
   Activity,
-  Sparkles,
 } from "lucide-react";
 
 const InvestmentPlans = () => {
@@ -57,6 +50,7 @@ const InvestmentPlans = () => {
   const actions = [
     {
       title: "Deposit",
+      link:"/deposits",
       icon: <Download className="w-6 h-6 text-emerald-500 dark:text-emerald-300" />,
       classes: {
         wrapper: "bg-emerald-500/10 hover:bg-emerald-500/20 dark:bg-emerald-300/20 dark:hover:bg-emerald-300/30",
@@ -65,6 +59,7 @@ const InvestmentPlans = () => {
     },
     {
       title: "Withdraw",
+      link: "/withdrawals",
       icon: <Upload className="w-6 h-6 text-blue-500 dark:text-blue-300" />,
       classes: {
         wrapper: "bg-blue-500/10 hover:bg-blue-500/20 dark:bg-blue-300/20 dark:hover:bg-blue-300/30",
@@ -73,6 +68,7 @@ const InvestmentPlans = () => {
     },
     {
       title: "New Plan",
+      link:"/plans",
       icon: <PlusCircle className="w-6 h-6 text-purple-500 dark:text-purple-300" />,
       classes: {
         wrapper: "bg-purple-500/10 hover:bg-purple-500/20 dark:bg-purple-300/20 dark:hover:bg-purple-300/30",
@@ -81,6 +77,7 @@ const InvestmentPlans = () => {
     },
     {
       title: "Missions",
+      link: "/missions",
       icon: <Flag className="w-6 h-6 text-amber-500 dark:text-amber-300" />,
       classes: {
         wrapper: "bg-amber-500/10 hover:bg-amber-500/20 dark:bg-amber-300/20 dark:hover:bg-amber-300/30",
@@ -146,11 +143,13 @@ const InvestmentPlans = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {actions.map((action, index) => (
+              
               <button
                 key={index}
                 className={`p-4 rounded-lg transition-all duration-300 group ${action.classes.wrapper}`}
               >
-                <div className="space-y-3">
+                <Link to={action.link}>
+                <div className="space-y-3 items-center">
                   <div
                     className={`w-12 h-12 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${action.classes.iconBox}`}
                   >
@@ -158,6 +157,8 @@ const InvestmentPlans = () => {
                   </div>
                   <span className="block font-medium text-gray-900 dark:text-white">{action.title}</span>
                 </div>
+                </Link>
+
               </button>
             ))}
           </div>

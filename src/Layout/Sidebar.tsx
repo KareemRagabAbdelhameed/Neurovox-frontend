@@ -1,8 +1,6 @@
 import { useLocation } from "wouter";
 import { cn } from "../lib/utils";
-import { useAuth } from "../hooks/useAuth";
 import { Badge } from "../components/ui/badge";
-import { Button } from "../components/ui/Button";
 import { useTranslation } from "react-i18next";
 import {
   TrendingUp,
@@ -31,7 +29,7 @@ export default function Sidebar({}: SidebarProps) {
   const navigation = [
     {
       name: t("Dashboard"),
-      href: "/",
+      href: "/dashboard",
       icon: Home,
       current: location === "/",
     },
