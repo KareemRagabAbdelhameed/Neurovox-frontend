@@ -42,7 +42,7 @@ const Login = () => {
         draggable: true,
         }).then((result)=>{
         if(result.isConfirmed){
-            navigate("/");
+            navigate("/dashboard");
             }
         }
         );
@@ -66,11 +66,9 @@ const Login = () => {
         {/* Branded Header */}
         <div className="text-center p-8 bg-gradient-to-r from-indigo-600 to-purple-600">
           <div className="flex items-center justify-center mb-3">
-            <Link to={"/"}>
             <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-sm">
               <Brain className="w-8 h-8 text-white" />
             </div>
-            </Link>
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">Neurovox</h1>
           <p className="text-indigo-200">AI Investment Platform</p>

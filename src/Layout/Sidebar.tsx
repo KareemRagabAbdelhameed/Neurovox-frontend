@@ -31,50 +31,50 @@ export default function Sidebar({}: SidebarProps) {
       name: t("Dashboard"),
       href: "/dashboard",
       icon: Home,
-      current: location === "/",
+      current: location === "/dashboard",
     },
     {
       name: t("Investment Plans"),
-      href: "/plans",
+      href: "/dashboard/plans",
       icon: TrendingUp,
-      current: location === "/plans",
+      current: location === "/dashboard/plans",
     },
     {
       name: t("Missions"),
-      href: "/missions",
+      href: "/dashboard/missions",
       icon: Target,
-      current: location === "/missions",
+      current: location === "/dashboard/missions",
       badge: 3,
     },
     {
       name: t("Deposits"),
-      href: "/deposits",
+      href: "/dashboard/deposits",
       icon: MoveDownRight,
-      current: location === "/deposits",
+      current: location === "/dashboard/deposits",
     },
     {
       name: t("Withdrawals"),
-      href: "/withdrawals",
+      href: "/dashboard/withdrawals",
       icon: MoveUpRightIcon,
-      current: location === "/withdrawals",
+      current: location === "/dashboard/withdrawals",
     },
     {
       name: t("Teams"),
-      href: "/teams",
+      href: "/dashboard/teams",
       icon: Users,
-      current: location === "/teams",
+      current: location === "/dashboard/teams",
     },
     {
       name: t("Analytics"),
-      href: "/analytics",
+      href: "/dashboard/analytics",
       icon: BarChart,
-      current: location === "/analytics",
+      current: location === "/dashboard/analytics",
     },
     {
       name: t("Settings"),
-      href: "/settings",
+      href: "/dashboard/settings",
       icon: SettingsIcon,
-      current: location === "/settings",
+      current: location === "/dashboard/settings",
     },
   ];
 
@@ -117,16 +117,16 @@ export default function Sidebar({}: SidebarProps) {
                 to={item.href}
                 className={cn(
                   item.current
-                    ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100",
-                  "group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300"
+                    ? "bg-gradient-to-r from-blue-500/10 to-blue-500/20 dark:from-blue-400/20 dark:to-blue-600/30 text-blue-700 dark:text-blue-300 border-r-4 border-blue-500 dark:border-blue-400"
+                    : "text-gray-600 dark:text-gray-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-700 dark:hover:text-blue-300",
+                  "group flex items-center px-4 py-3 text-sm font-medium rounded-l-xl transition-all duration-300"
                 )}
               >
                 <item.icon
                   className={cn(
                     item.current
                       ? "text-blue-600 dark:text-blue-400"
-                      : "text-gray-500 dark:text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300",
+                      : "text-gray-400 dark:text-gray-500 group-hover:text-blue-500 dark:group-hover:text-blue-400",
                     "mr-3 h-5 w-5 flex-shrink-0 transition-colors duration-300"
                   )}
                 />
@@ -136,7 +136,12 @@ export default function Sidebar({}: SidebarProps) {
                 {item.badge && (
                   <Badge
                     variant="secondary"
-                    className="ml-2 bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300"
+                    className={cn(
+                      "ml-2",
+                      item.current
+                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300"
+                        : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 group-hover:bg-blue-100 group-hover:text-blue-800 dark:group-hover:bg-blue-900/50 dark:group-hover:text-blue-300"
+                    )}
                   >
                     {item.badge}
                   </Badge>
@@ -205,15 +210,22 @@ export default function Sidebar({}: SidebarProps) {
               to={item.href}
               className={cn(
                 item.current
-                  ? "text-blue-600 dark:text-blue-400"
-                  : "text-gray-600 dark:text-gray-400",
-                "flex flex-col items-center p-2 text-xs rounded-lg transition-colors duration-200"
+                  ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800",
+                "flex flex-col items-center p-2 text-xs rounded-lg transition-all duration-300"
               )}
             >
               <div className="relative">
-                <item.icon className="h-3 w-3 mx-auto" />
+                <item.icon
+                  className={cn(
+                    "h-5 w-5 mx-auto",
+                    item.current
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-gray-400 dark:text-gray-500"
+                  )}
+                />
                 {item.badge && (
-                  <span className="absolute -top-1 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                  <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 dark:bg-blue-400 text-[10px] text-white">
                     {item.badge}
                   </span>
                 )}

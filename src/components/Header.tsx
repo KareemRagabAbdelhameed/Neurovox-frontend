@@ -174,7 +174,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         showConfirmButton: false,
       });
 
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -189,22 +189,19 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-900/80">
-      <div className="max-w-[1920px] mx-auto flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
-        <div className="flex items-center space-x-4">
-          {/* Mobile menu button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="lg:hidden p-2"
+    <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-40">
+      <div className="flex items-center justify-between px-4 py-4 sm:px-6">
+        <div className="flex items-center">
+          {/* Mobile Menu Button */}
+          <button
             onClick={onMobileMenuToggle}
-            data-testid="button-mobile-menu"
+            className="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
           >
-            <Menu className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-          </Button>
+            <Menu className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+          </button>
           
           {/* Logo and Title */}
-          <Link to="/" className="flex items-center space-x-3 p-2 rounded-xl transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <Link to="/dashboard" className="flex items-center space-x-3 p-2 rounded-xl transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 dark:shadow-indigo-900/30 hover:shadow-indigo-500/30 dark:hover:shadow-indigo-900/40 transition-shadow duration-300">
               <Brain className="w-6 h-6 text-white" />
             </div>
@@ -355,7 +352,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-56 origin-top-right bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg z-50">
                     <div className="flex items-center justify-start gap-3 p-4">
-                      <Link to={"/profile"}>
+                      <Link to={"/dashboard/profile"}>
                       <Avatar className="h-12 w-12 bg-gradient-to-r from-indigo-600 to-purple-600">
                         {/* <AvatarImage src={user?.avatar} alt={user?.name} /> */}
                         <AvatarFallback className="text-white">
@@ -377,7 +374,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                     
                     <div className="py-2">
                       <Link
-                        to="/settings"
+                        to="/dashboard/settings"
                         className="w-full flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
                         onClick={() => setIsDropdownOpen(false)}
                       >
@@ -417,7 +414,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
           ) : (
             // Non-authenticated User UI
             <div className="flex items-center space-x-2 sm:space-x-3">
-              <Link to="/login">
+              <Link to="/">
                 <Button 
                   variant="ghost" 
                   size="sm"

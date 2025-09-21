@@ -39,6 +39,7 @@ export const registerUser = createAsyncThunk(
   async (data: RegisterPayload, { rejectWithValue }) => {
     try {
       const res = await api.post("auth/register", data);
+      console.log(res.data);
       return res.data;
     } catch (err: any) {
       return rejectWithValue(
