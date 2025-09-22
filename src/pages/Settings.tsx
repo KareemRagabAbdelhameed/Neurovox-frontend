@@ -15,7 +15,7 @@ const Settings = () => {
   
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+    <div className="min-h-screen w-full flex items-center justify-center pb-32 -ml-5 sm:-ml-0 lg:pb-0 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       <div className="w-full max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 sm:p-8 lg:p-10 ml-12 sm:ml-28 md:ml-36 lg:ml-44 transition-colors duration-300">
         <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-10 text-center">
           {t("settings")}
@@ -23,7 +23,7 @@ const Settings = () => {
         
         <div className="grid gap-8 md:grid-cols-2 w-full">
           {/* Language Selection */}
-          <div className="w-full bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 sm:p-8">
+          <div className="w-full bg-gray-50 dark:bg-gray-700/50 rounded-xl p-16 sm:p-8">
             <label className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">
               {t("language")}
             </label>
