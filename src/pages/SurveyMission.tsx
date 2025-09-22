@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPoints, completeTask, startTask } from "../store/missionsSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import type { AppDispatch, RootState } from "../store/store";
+import { ArrowRight } from "lucide-react";
 
 const surveyQuestions = [
   {
@@ -56,11 +57,16 @@ const SurveyMission = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 flex justify-center">
-      <div className="w-[350px] sm:w-[500px] md:w-[600px] lg:ml-14 lg:w-[800px] bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 pb-32 lg:pb-0 flex justify-center">
+      <div className="w-[280px] sm:w-[400px] md:w-[500px] ml-8 lg:ml-14 lg:w-[800px] bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
         {!surveyCompleted ? (
           <>
+            <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t("Survey")}</h2>
+            <Link to={"/dashboard/missions"}>
+        <ArrowRight className="w-5 h-5 dark:text-white" /> {/* Icon */}
+        </Link>
+            </div>
             <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
               {surveyQuestions[currentQuestion].question}
             </h4>

@@ -19,7 +19,7 @@ const Missions = () => {
   ];
 
   return (
-    <div className="min-h-screen p-6 ml-4 lg:ml-16 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-blue-900">
+    <div className="min-h-screen p-6 pb-32 lg:pb-1 ml-10 sm:12 md:14 lg:ml-16 ">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-4">{t("Daily Missions")}</h1>
         <div className="inline-flex items-center space-x-2 bg-white dark:bg-gray-800 rounded-full px-6 py-2 shadow-lg">

@@ -17,31 +17,22 @@ type RegisterValues = {
   dateOfBirth: Date;
   password: string;
   confirmPassword: string;
-  referrerCode?: string;
 };
 
 const Register = () => {
   const { isDarkMode } = useTheme();
   const dispatch = useAppDispatch();
   const { loading, error, success } = useAppSelector((state) => state.auth);
-  const location = useLocation();
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<RegisterValues>({
     resolver: yupResolver(registerSchema),
   });
 
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const refCode = searchParams.get('ref');
-    if (refCode) {
-      setValue('referrerCode', refCode);
-    }
-  }, [location.search, setValue]);
+  
 
   const onSubmit = (data: RegisterValues) => {
     const { confirmPassword, ...payload } = data;
@@ -77,7 +68,7 @@ const Register = () => {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center p-6 ${
+      className={`min-h-screen flex items-center justify-center p-0 lg:p-6 ${
         isDarkMode
           ? "bg-gray-900 text-white"
           : "bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 text-gray-900"
@@ -86,7 +77,7 @@ const Register = () => {
       <div
         className={`w-full max-w-md ${
           isDarkMode ? "bg-gray-800" : "bg-white"
-        } shadow-2xl rounded-3xl overflow-hidden`}
+        } shadow-2xl rounded-none lg:rounded-3xl overflow-hidden`}
       >
         {/* Header */}
         <div className="text-center p-8 bg-gradient-to-r from-indigo-600 to-purple-600">
@@ -211,19 +202,7 @@ const Register = () => {
               {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>}
             </div>
 
-            {/* Referral Code (Optional) */}
-            <div>
-              <label className={`block mb-1.5 text-sm font-medium ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}>
-                Referral Code (Optional)
-              </label>
-              <input
-                {...register("referrerCode")}
-                className={`w-full p-3 rounded-xl border ${
-                  isDarkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-gray-50 border-gray-200"
-                } focus:ring-2 focus:ring-indigo-500 transition-all`}
-                placeholder="Enter referral code if you have one"
-              />
-            </div>
+            
 
             {/* Submit Button */}
             <button

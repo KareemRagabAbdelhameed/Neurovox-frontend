@@ -40,7 +40,7 @@ api.interceptors.response.use(
         // If refresh token fails, redirect to login
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
+        window.location.href = '/';
         return Promise.reject(refreshError);
       }
     }

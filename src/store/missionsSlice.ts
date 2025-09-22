@@ -8,6 +8,7 @@ interface MissionsState {
   articleRead: boolean;
   checkedIn: boolean;
   surveyCompleted: boolean;
+  taskStartTime: number | null;
   startedAt: {
     video?: number;
     article?: number;
@@ -28,6 +29,7 @@ const initialState: MissionsState = {
   articleRead: false,
   checkedIn: false,
   surveyCompleted: false,
+  taskStartTime: null,
   startedAt: {},
   durations: {},
 };
@@ -42,11 +44,17 @@ const missionsSlice = createSlice({
     startTask: (state, action: PayloadAction<string>) => {
       const task = action.payload;
       state.startedAt[task as keyof MissionsState["startedAt"]] = Date.now();
+      state.taskStartTime = Date.now();
     },
     completeTask: (state, action: PayloadAction<string>) => {
       const task = action.payload;
       const start = state.startedAt[task as keyof MissionsState["startedAt"]];
       const duration = start ? Math.floor((Date.now() - start) / 1000) : 0;
+      if (state.taskStartTime) {
+        const duration = Math.floor((Date.now() - state.taskStartTime) / 1000);
+        console.log(`⏱ Task "${action.payload}" took ${duration} seconds`);
+        state.taskStartTime = null;
+      }
 
       switch (task) {
         case "video":

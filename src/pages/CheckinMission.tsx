@@ -2,9 +2,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPoints, completeTask, startTask } from "../store/missionsSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import type { AppDispatch, RootState } from "../store/store";
+import { ArrowRight } from "lucide-react";
 
 const CheckinMission = () => {
   const { t } = useTranslation();
@@ -28,8 +29,13 @@ const CheckinMission = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 flex items-center justify-center">
-      <div className="w-[300px] sm:w-[400px] md:w-[500px] lg:ml-14 lg:w-[600px] bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg text-center">
+      <div className="w-[280px] sm:w-[400px] md:w-[400px] ml-6 lg:ml-36 -mt-96 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg text-center">
+        <div className="flex justify-between items-center p-2 pb-6">
         <div className="text-6xl mb-4">🎯</div>
+        <Link to={"/dashboard/missions"}>
+        <ArrowRight className="w-5 h-5 dark:text-white" /> {/* Icon */}
+        </Link>
+        </div>
         <p className="text-gray-600 dark:text-gray-300 mb-6">
           {t("Check in daily to earn bonus points and maintain your streak!")}
         </p>

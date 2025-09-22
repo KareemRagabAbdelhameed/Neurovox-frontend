@@ -158,7 +158,7 @@ export default function DepositsPage() {
 
       
 
-      <div className="max-w-6xl mx-auto -ml-5 space-y-8">
+      <div className="max-w-6xl mx-auto -ml-5 pl-4 pb-24 lg:pb-0 lg:pl-0 space-y-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>

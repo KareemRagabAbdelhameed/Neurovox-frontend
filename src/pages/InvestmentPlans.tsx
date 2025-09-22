@@ -87,7 +87,7 @@ const InvestmentPlans = () => {
   ];
 
   return (
-    <div className="container mx-auto pl-4 sm:pl-8 py-8 space-y-8">
+    <div className="container mx-auto px-4 sm:px-8 pt-8 pb-24 md:pb-8 space-y-8">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
         <div className="space-y-1">
@@ -103,7 +103,8 @@ const InvestmentPlans = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* تم التعديل هنا: grid-cols-2 ستطبق على جميع الشاشات بما فيها الموبايل */}
+      <div className="grid grid-cols-2 gap-4"> 
         {stats.map((stat, index) => (
           <Card
             key={index}

@@ -61,8 +61,8 @@ const Login = () => {
   }, [success, error, dispatch]);
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-6 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 text-gray-900'}`}>
-      <div className={`w-full max-w-md ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-2xl rounded-3xl overflow-hidden`}>
+    <div className={`min-h-screen flex items-center justify-center ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 text-gray-900'}`}>
+      <div className={`w-full max-w-md ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-2xl rounded-none lg:rounded-3xl overflow-hidden`}>
         {/* Branded Header */}
         <div className="text-center p-8 bg-gradient-to-r from-indigo-600 to-purple-600">
           <div className="flex items-center justify-center mb-3">

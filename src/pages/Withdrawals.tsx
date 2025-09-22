@@ -52,7 +52,7 @@ export default function WithdrawalsPage() {
   const calculateNet = (amt: string) => ((parseFloat(amt) || 0) * 0.95).toFixed(2);
 
   return (
-    <div className="container mx-auto p-6 space-y-8">
+    <div className="container mx-auto p-6 pb-36 lg:pb-0 space-y-8">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>

@@ -112,7 +112,7 @@ export default function Sidebar({}: SidebarProps) {
       <aside
         className={cn(
           "w-72 lg:w-64 xl:w-80 glass-card border-r border-gray-200 dark:border-gray-800 flex-shrink-0 flex-col",
-          "hidden lg:flex",
+          "hidden md:flex",
           "bg-white dark:bg-gray-900"
         )}
       >

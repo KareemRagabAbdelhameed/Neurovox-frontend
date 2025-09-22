@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
 import api from "../config/axiosConfig";
 import { fetchUser } from "../store/userSlice";
+import axios from "axios";
 
 interface HeaderProps {
   onMobileMenuToggle?: () => void;
@@ -93,6 +94,24 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
     fetchNotifications();
   }, []);
 
+  const handleNotificationClick = async (notification: any) => {
+    try {
+      // تحديث حالة الإشعار في الواجهة
+      const updatedNotifications = notifications.map(n => 
+        n.id === notification.id ? { ...n, isRead: true } : n
+      );
+      setNotifications(updatedNotifications);
+      setUnreadCount(prev => prev - 1);
+      
+      // إرسال طلب PATCH إلى الخادم
+      const res = await axios.patch(`http://195.200.15.135/notifications/is-read/${notification.id}`);
+      console.log(res);
+      setIsNotificationsOpen(false);
+    } catch (error) {
+      console.error('Error updating notification status:', error);
+    }
+  };
+
   const handleMobileMenuToggle = () => {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
     if (onMobileMenuToggle) {
@@ -149,6 +168,8 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
     }
   };
 
+  
+
   // Mobile navigation items
   const mobileNavItems = [
     { path: "/dashboard", icon: Home, label: t("Dashboard") },
@@ -179,14 +200,15 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             <button
               onClick={handleMobileMenuToggle}
               className="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+              aria-label="Toggle mobile menu"
             >
               <Menu className="w-6 h-6 text-gray-500 dark:text-gray-400" />
             </button>
             
             {/* Logo and Title */}
             <Link to="/dashboard" className="flex items-center space-x-3 p-2 rounded-xl transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 dark:shadow-indigo-900/30 hover:shadow-indigo-500/30 dark:hover:shadow-indigo-900/40 transition-shadow duration-300">
-                <Brain className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+              <div className="hidden w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 sm:flex items-center justify-center shadow-lg shadow-indigo-500/20 dark:shadow-indigo-900/30 hover:shadow-indigo-500/30 dark:hover:shadow-indigo-900/40 transition-shadow duration-300">
+                <Brain className="hidden sm:flex w-4 h-4 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text hover:scale-105 transition-transform duration-300">Neurovox</h1>
@@ -269,6 +291,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                               key={notification.id} 
                               className={`px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-100 dark:border-gray-800 last:border-b-0 ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
                               onClick={() => {
+                                handleNotificationClick(notification);
                                 const updatedNotifications = notifications.map(n => 
                                   n.id === notification.id ? { ...n, isRead: true } : n
                                 );
@@ -360,6 +383,15 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                           <Settings className="mr-3 h-4 w-4" />
                           {t("Settings")}
                         </Link>
+                        {/* New Profile Link */}
+                        <Link
+                          to="/dashboard/profile"
+                          className="w-full flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          <User className="mr-3 h-4 w-4" />
+                          {t("Profile")}
+                        </Link>
                         
                         <button
                           className="w-full flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
@@ -423,7 +455,9 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden" onClick={() => setIsMobileSidebarOpen(false)}>
           <div 
             ref={sidebarRef}
-            className="fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-900 shadow-lg transform transition-transform duration-300 ease-in-out z-50"
+            className={`fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-900 shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${
+              isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 border-b border-gray-200 dark:border-gray-800">
@@ -437,8 +471,9 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 <button 
                   onClick={() => setIsMobileSidebarOpen(false)}
                   className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                  aria-label="Close mobile menu"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5 dark:text-white" />
                 </button>
               </div>
             </div>
@@ -466,8 +501,8 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         </div>
       )}
 
-      {/* Mobile Bottom Navigation Bar - Only show when user is authenticated */}
-      {token && (
+      {/* Mobile Bottom Navigation Bar - Only show when user is authenticated AND sidebar is closed */}
+      {token && !isMobileSidebarOpen && (
         <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 p-2 flex justify-around items-center lg:hidden z-30">
           {mobileNavBottomItems.map((item) => (
             <button
