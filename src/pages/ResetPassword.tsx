@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { resetAuth, resetPassword } from "../store/authSlice";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Brain } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
 

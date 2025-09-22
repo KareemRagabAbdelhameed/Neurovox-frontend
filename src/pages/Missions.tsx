@@ -19,7 +19,7 @@ const Missions = () => {
   ];
 
   return (
-    <div className="min-h-screen p-6 pb-32 lg:pb-1 ml-10 sm:12 md:14 lg:ml-16 ">
+    <div className="min-h-screen p-6 pb-32 lg:pb-1 ml-10 sm:12 md:14 lg:ml-16">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-4">{t("Daily Missions")}</h1>
         <div className="inline-flex items-center space-x-2 bg-white dark:bg-gray-800 rounded-full px-6 py-2 shadow-lg">
@@ -29,26 +29,29 @@ const Missions = () => {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {tasks.map(task => (
-          <Link
-            to={`/dashboard/missions/${task.id}`}
-            key={task.id}
-            className={`bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 ${
-              task.completed ? "border-2 border-green-500" : ""
-            }`}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className={`text-${task.color}-500`}>{task.icon}</div>
-              {task.completed && <CheckCircle className="w-6 h-6 text-green-500" />}
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{task.title}</h3>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500 dark:text-gray-400">+{task.points} {t("Points")}</span>
-              {!task.completed && <ChevronRight className="w-5 h-5 text-gray-400" />}
-            </div>
-          </Link>
-        ))}
+      {/* Wrapper div for the grid to control its max-width and center it */}
+      <div className="mx-auto max-w-screen-lg"> {/* يمكنك تعديل max-w-screen-lg إلى max-w-screen-md أو max-w-4xl حسب العرض الذي تفضله */}
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {tasks.map(task => (
+            <Link
+              to={`/dashboard/missions/${task.id}`}
+              key={task.id}
+              className={`bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 ${
+                task.completed ? "border-2 border-green-500" : ""
+              }`}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className={`text-${task.color}-500`}>{task.icon}</div>
+                {task.completed && <CheckCircle className="w-6 h-6 text-green-500" />}
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{task.title}</h3>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-500 dark:text-gray-400">+{task.points} {t("Points")}</span>
+                {!task.completed && <ChevronRight className="w-5 h-5 text-gray-400" />}
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

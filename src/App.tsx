@@ -1,7 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query"
 import MainLayout from "./Layout"
 import { queryClient } from "./lib/queryClient"
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import Register from "./pages/Register"
 import Login from "./pages/Login"
 import ResetPassword from "./pages/ResetPassword"
@@ -23,6 +23,8 @@ import VideoMission from "./pages/VideoMission"
 import ArticleMission from "./pages/ArticleMission"
 import CheckinMission from "./pages/CheckinMission"
 import SurveyMission from "./pages/SurveyMission"
+import NotificationsPage from "./pages/Notifications"
+import NotFoundPage from "./pages/NotfoundPage"
 
 const App = () => {
 
@@ -69,6 +71,7 @@ const App = () => {
           <Route path="teams" element={<InvestmentPlans />} />
           <Route path="analytics" element={<InvestmentPlans />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="notifications" element={<NotificationsPage />} />
           <Route path="profile" element={<ProfilePage />} />
         </Route>
           <Route path="/register" element = {<Register />} />
@@ -76,6 +79,7 @@ const App = () => {
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="*" element={<NotFoundPage />} />
           </Routes>
       </QueryClientProvider>
     </div>

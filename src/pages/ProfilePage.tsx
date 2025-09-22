@@ -19,7 +19,7 @@ const ProfilePage = () => {
       dispatch(fetchUser());
     }
   }, [dispatch, token]);
-
+  console.log(userInfo);
   useEffect(() => {
     axios
       .get(`http://195.200.15.135/users/referral/${userInfo.id}`)

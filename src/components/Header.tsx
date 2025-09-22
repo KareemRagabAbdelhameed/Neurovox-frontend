@@ -1,3 +1,4 @@
+// src/components/Header.tsx
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Button } from "../components/ui/Button";
@@ -10,9 +11,10 @@ import { logoutUser } from "../store/authSlice";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
-import api from "../config/axiosConfig";
+import api from "../config/axiosConfig"; // تأكد من استخدام هذا الـ instance
 import { fetchUser } from "../store/userSlice";
 import axios from "axios";
+// import axios from "axios"; // لم تعد بحاجة لـ axios مباشرة إذا كنت تستخدم الـ `api` instance
 
 interface HeaderProps {
   onMobileMenuToggle?: () => void;
@@ -21,7 +23,7 @@ interface HeaderProps {
 export default function Header({ onMobileMenuToggle }: HeaderProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-  const { data: userInfo, loading, error } = useSelector((state: RootState) => state.user);
+  const { data: userInfo } = useSelector((state: RootState) => state.user);
   const token = useSelector((state: RootState) => state.auth.token);
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,6 +33,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isMarkingAllReadHeader, setIsMarkingAllReadHeader] = useState(false); // حالة جديدة لزر "قراءة الكل" في الهيدر
   
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
@@ -78,37 +81,57 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
     }
   }, [dispatch, token]);
 
+  const fetchNotifications = async () => {
+    try {
+      const res = await api.get("notifications"); 
+      setNotifications(res.data.data);
+      const unread = res.data.data.filter((notification: any) => !notification.isRead);
+      setUnreadCount(unread.length);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const res = await api.get("notifications"); 
-        console.log(res.data.data);
-        setNotifications(res.data.data);
-        const unreadNotifications = res.data.data.filter((notification: any) => !notification.isRead);
-        setUnreadCount(unreadNotifications.length);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-  
     fetchNotifications();
-  }, []);
+  }, []); 
 
   const handleNotificationClick = async (notification: any) => {
     try {
-      // تحديث حالة الإشعار في الواجهة
       const updatedNotifications = notifications.map(n => 
         n.id === notification.id ? { ...n, isRead: true } : n
       );
       setNotifications(updatedNotifications);
       setUnreadCount(prev => prev - 1);
       
-      // إرسال طلب PATCH إلى الخادم
-      const res = await axios.patch(`http://195.200.15.135/notifications/is-read/${notification.id}`);
+      const res = await axios.patch(`http://195.200.15.135/notifications/is-read/${notification.id}`); // <--- تم التعديل هنا
       console.log(res);
       setIsNotificationsOpen(false);
     } catch (error) {
       console.error('Error updating notification status:', error);
+    }
+  };
+
+  const handleMarkAllReadFromHeader = async () => {
+    setIsMarkingAllReadHeader(true); 
+    try {
+      const unreadNotifications = notifications.filter(n => !n.isRead);
+      const patchPromises = unreadNotifications.map(n => 
+        api.patch(`/notifications/is-read/${n.id}`)
+      );
+      
+      await Promise.all(patchPromises);
+
+      // بعد اكتمال جميع الطلبات بنجاح، قم بتحديث الحالة المحلية
+      setNotifications(notifications.map(n => ({ ...n, isRead: true })));
+      setUnreadCount(0);
+      // إذا كنت تستخدم Redux لتخزين الإشعارات عالمياً، قد تحتاج إلى إرسال (dispatch) إجراء هنا أيضاً
+      // dispatch(markAllNotificationsAsRead());
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+      // يمكنك عرض رسالة خطأ للمستخدم هنا (مثل toast)
+    } finally {
+      setIsMarkingAllReadHeader(false); // أوقف تحميل الزر
     }
   };
 
@@ -167,8 +190,6 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
       });
     }
   };
-
-  
 
   // Mobile navigation items
   const mobileNavItems = [
@@ -266,12 +287,10 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                               variant="ghost" 
                               size="sm" 
                               className="text-xs h-auto p-1 text-indigo-600 dark:text-indigo-400"
-                              onClick={() => {
-                                setNotifications(notifications.map(n => ({ ...n, unread: false })));
-                                setUnreadCount(0);
-                              }}
+                              onClick={handleMarkAllReadFromHeader} // <--- تم التعديل هنا
+                              disabled={isMarkingAllReadHeader} // تعطيل الزر أثناء التحميل
                             >
-                              {t("Mark all read")}
+                              {isMarkingAllReadHeader ? t("Marking all read...") : t("Mark all read")}
                             </Button>
                           )}
                           <Button
@@ -292,12 +311,6 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                               className={`px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-100 dark:border-gray-800 last:border-b-0 ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
                               onClick={() => {
                                 handleNotificationClick(notification);
-                                const updatedNotifications = notifications.map(n => 
-                                  n.id === notification.id ? { ...n, isRead: true } : n
-                                );
-                                setNotifications(updatedNotifications);
-                                setUnreadCount(prev => prev - 1);
-                                setIsNotificationsOpen(false);
                               }}
                             >
                               <div className="flex items-start justify-between">
@@ -326,7 +339,8 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                           variant="ghost" 
                           className="w-full justify-center text-indigo-600 dark:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-800 py-3"
                           onClick={() => {
-                            setIsNotificationsOpen(false);
+                            setIsNotificationsOpen(false); // أغلق القائمة المنسدلة
+                            navigate("/dashboard/notifications"); // التوجيه إلى الصفحة الجديدة
                           }}
                         >
                           {t("View All Notifications")}

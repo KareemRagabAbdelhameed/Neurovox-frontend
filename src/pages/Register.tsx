@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../validation/authSchema";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
 import { Brain } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";

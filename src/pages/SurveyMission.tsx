@@ -58,7 +58,7 @@ const SurveyMission = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 pb-32 lg:pb-0 flex justify-center">
-      <div className="w-[280px] sm:w-[400px] md:w-[500px] ml-8 lg:ml-14 lg:w-[800px] bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+      <div className="w-[300px] sm:w-[400px] md:w-[500px] ml-4 lg:ml-14 lg:w-[800px] bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
         {!surveyCompleted ? (
           <>
             <div className="flex justify-between items-center">
